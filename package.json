@@ -7,7 +7,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "vitest --environment jsdom --root src/",
+    "test": "vitest --environment jsdom",
     "test:cov": "vitest run --environment jsdom --coverage"
   },
   "devDependencies": {
@@ -23,6 +23,7 @@
     "vue-tsc": "^1.6.5"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.0.18",
     "mitt": "^3.0.0"
   }
 }
