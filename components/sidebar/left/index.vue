@@ -3,7 +3,7 @@
     <div class="flex flex-col h-screen">
 
         <div class="p-2 my-2 w-min rounded-full hover:bg-blue-50 dark:hover:bg-white/20"
-        :class="useTailwindConfig().defaultTransition"
+        :class="defaultTransition"
         >
 
             <nuxt-link to="/">
@@ -101,6 +101,8 @@
 <script setup lang="ts">
 import {HomeIcon} from "@heroicons/vue/24/solid";
 import { BellIcon, UserIcon, DocumentTextIcon, InboxIcon, BookmarkIcon, HashtagIcon, EllipsisHorizontalCircleIcon } from "@heroicons/vue/24/outline";
+
+const {defaultTransition} = useTailwindConfig();
 
 </script>
 

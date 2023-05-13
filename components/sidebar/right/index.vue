@@ -16,7 +16,7 @@
       <!-- preview card: Who to follow -->
       <sidebar-right-preview-card :title="`Who to follow`">
 
-          <sidebar-right-preview-card-item  v-for="item in whoToFollowItems" :key="item">
+          <sidebar-right-preview-card-item  v-for="item in whoToFollowItems" :key="item.name">
 
               <div class="flex flex-row items-center justify-between p-2">
                   <div class="flex flex-row">
