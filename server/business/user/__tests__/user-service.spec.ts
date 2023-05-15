@@ -3,8 +3,6 @@ import {faker} from "@faker-js/faker";
 import type {CreateUpdateUserDTO} from "../core/dto/create-update-user.dto";
 import type {UserDTO} from "../core/dto/user.dto";
 import User from "../index";
-import {SymbolKind} from "vscode-languageserver-types";
-import Null = SymbolKind.Null;
 
 describe('User service tests', () => {
 
