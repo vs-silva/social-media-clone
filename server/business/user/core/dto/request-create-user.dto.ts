@@ -4,5 +4,4 @@ export interface RequestCreateUserDTO {
     password: string;
     repeatPassword: string;
     name?: string;
-
 }

@@ -2,6 +2,7 @@ import {H3Event, sendError} from "h3";
 import User from "~/server/business/user";
 import type {RequestCreateUserDTO} from "~/server/business/user/core/dto/request-create-user.dto";
 
+
 export default defineEventHandler(async (event: H3Event) => {
     const body = await readBody(event);
 

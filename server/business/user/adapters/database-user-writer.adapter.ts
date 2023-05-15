@@ -4,6 +4,8 @@ import DataProvider from "../../../data-provider";
 import {User} from "@prisma/client";
 import type {UserEntity} from "../core/entity/user.entity";
 import moment from "moment";
+import bcrypt from 'bcrypt';
+import {ImageConstants} from "../core/constants/image.constants";
 
 export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
 
@@ -14,7 +16,11 @@ export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
         try {
 
             const user: User =  await engine.user.create({
-               data: dto
+               data: {
+                   ...dto,
+                   profileImage: ImageConstants.PROFILE_IMAGE,
+                   password: bcrypt.hashSync(dto.password, 10)
+               }
             });
 
             return <UserEntity>{
