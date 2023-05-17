@@ -4,9 +4,9 @@ import Settings from "../../settings";
 import {UserAuthDTO} from "../../business/user/core/dto/user-auth.dto";
 import {UserTokenSecretDTO} from "../../business/user/core/dto/user-token-secret.dto";
 import {UserResponseDTO} from "../../business/user/core/dto/user-response.dto";
-import RefreshToken from "~/server/business/refresh-token";
-import {RefreshTokenRegisterDTO} from "~/server/business/refresh-token/core/dto/refresh-token-register.dto";
-import {RefreshTokenConstants} from "~/server/business/refresh-token/core/constants/refresh-token.constants";
+import RefreshToken from "../../business/refresh-token";
+import {RefreshTokenRegisterDTO} from "../../business/refresh-token/core/dto/refresh-token-register.dto";
+import {RefreshTokenConstants} from "../../business/refresh-token/core/constants/refresh-token.constants";
 
 export default defineEventHandler( async (event: H3Event) => {
     const body = await readBody(event);
