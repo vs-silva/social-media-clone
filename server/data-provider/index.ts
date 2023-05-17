@@ -1,3 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
+import Settings from "../settings";
+
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: Settings.dbConnectionString
+        }
+    }
+});
 export default prisma;
