@@ -1,10 +1,8 @@
-export interface CreateUpdateUserDTO {
+export interface UserCreateUpdateDTO {
     id?: string;
     email: string;
     name?: string;
     username: string;
     password: string;
     profileImage?: string;
-    createdAt?: string;
-    updatedAt?: string;
 }

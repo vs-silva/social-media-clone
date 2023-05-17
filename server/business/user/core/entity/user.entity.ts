@@ -5,6 +5,6 @@ export interface UserEntity {
     username: string;
     password: string;
     profileImage?: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

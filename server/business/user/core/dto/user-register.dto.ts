@@ -1,4 +1,4 @@
-export interface RequestCreateUserDTO {
+export interface UserRegisterDTO {
     email: string;
     username: string;
     password: string;

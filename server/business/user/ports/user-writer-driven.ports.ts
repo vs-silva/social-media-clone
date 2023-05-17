@@ -1,6 +1,6 @@
-import type {CreateUpdateUserDTO} from "../core/dto/create-update-user.dto";
 import type {UserEntity} from "../core/entity/user.entity";
+import type {UserCreateUpdateDTO} from "../core/dto/user-create-update.dto";
 
 export interface UserWriterDrivenPorts {
-    createUser(dto: CreateUpdateUserDTO): Promise<UserEntity | null>;
+    save(dto: UserCreateUpdateDTO): Promise<UserEntity | null>;
 }

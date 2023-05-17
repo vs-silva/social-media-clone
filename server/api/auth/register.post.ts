@@ -1,12 +1,11 @@
 import {H3Event, sendError} from "h3";
-import User from "~/server/business/user";
-import type {RequestCreateUserDTO} from "~/server/business/user/core/dto/request-create-user.dto";
-
+import User from "../../business/user";
+import {UserRegisterDTO} from "../../business/user/core/dto/user-register.dto";
 
 export default defineEventHandler(async (event: H3Event) => {
     const body = await readBody(event);
 
-    const {email, name, username, password, repeatPassword} = body as RequestCreateUserDTO;
+    const {email, name, username, password, repeatPassword} = body as UserRegisterDTO;
 
     //TODO: Update this to use JOI
     if(!email || !username || !password || !repeatPassword) {
@@ -23,11 +22,12 @@ export default defineEventHandler(async (event: H3Event) => {
         }));
     }
 
-    return await User.save({
+    return await User.registerUser({
         username,
         email,
         name,
-        password
+        password,
+        repeatPassword
     });
 
 });

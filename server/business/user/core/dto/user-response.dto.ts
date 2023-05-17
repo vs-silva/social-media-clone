@@ -1,13 +1,10 @@
-import type {UserAccessTokensDTO} from "./user-access-tokens.dto";
-
-export interface UserDTO {
+export interface UserResponseDTO {
     id: string;
     email: string;
     name?: string;
     username: string;
-    password: string;
     profileImage: string;
     profileCreateDate: string;
     profileLastUpdateDate: string;
-    token?: UserAccessTokensDTO;
+    access_token?: string;
 }

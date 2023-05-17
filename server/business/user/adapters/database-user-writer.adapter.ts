@@ -1,37 +1,31 @@
-import type {UserWriterDrivenPorts} from "../ports/user-writer-driven.ports";
-import type {CreateUpdateUserDTO} from "../core/dto/create-update-user.dto";
 import DataProvider from "../../../data-provider";
 import {User} from "@prisma/client";
+import type {UserWriterDrivenPorts} from "../ports/user-writer-driven.ports";
 import type {UserEntity} from "../core/entity/user.entity";
-import moment from "moment";
-import bcrypt from 'bcrypt';
-import {ImageConstants} from "../core/constants/image.constants";
+import type {UserCreateUpdateDTO} from "../core/dto/user-create-update.dto";
+
 
 export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
 
     const engine = DataProvider;
 
-    async function createUser(dto: CreateUpdateUserDTO): Promise<UserEntity | null> {
+    async function save(dto: UserCreateUpdateDTO): Promise<UserEntity | null> {
 
         try {
 
             const user: User =  await engine.user.create({
-               data: {
-                   ...dto,
-                   profileImage: ImageConstants.PROFILE_IMAGE,
-                   password: bcrypt.hashSync(dto.password, 10)
-               }
+                data: dto
             });
 
-            return <UserEntity>{
+            return <UserEntity> {
                 id: user.id,
                 email: user.email,
                 name: user.name as string,
                 username: user.username,
                 password: user.password,
-                profileImage: user.profileImage as string || '',
-                createdAt: moment(user.createdAt).format('LLLL'),
-                updatedAt: moment(user.createdAt).format('LLLL')
+                profileImage: user.profileImage,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
             };
 
         } catch (error) {
@@ -42,11 +36,9 @@ export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
 
         }
 
-
-
     }
 
     return {
-        createUser
+        save
     };
 }
