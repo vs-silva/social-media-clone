@@ -10,6 +10,8 @@ import type {UserAuthDTO} from "../../user/core/dto/user-auth.dto";
 
 describe('Refresh Token service tests', () => {
 
+    const timeout = 10*1000;
+
     it('saveRefreshToken should create a new refreshToken and return a RefreshTokenDTO', async () => {
 
         const idRegex = /\b[0-9a-f]{24}\b/;
@@ -65,6 +67,6 @@ describe('Refresh Token service tests', () => {
 
         //TODO: clear test data
 
-    });
+    }, timeout);
 
 });

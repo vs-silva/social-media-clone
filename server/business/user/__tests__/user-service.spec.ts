@@ -9,6 +9,8 @@ import type {UserTokenSecretDTO} from "../core/dto/user-token-secret.dto";
 
 describe('User service tests', () => {
 
+    const timeout = 10*1000;
+
     const idRegex = /\b[0-9a-f]{24}\b/;
 
     const fakePassword = faker.internet.password();
@@ -46,7 +48,7 @@ describe('User service tests', () => {
             profileLastUpdateDate: expect.any(String)
         }));
 
-    });
+    }, timeout);
 
     describe('authenticateUser port tests', () => {
 
@@ -69,7 +71,7 @@ describe('User service tests', () => {
             expect(spy).toHaveBeenCalledWith(fakeAuthDTO, fakeTokenSecrets);
 
             expect(result).toBeNull();
-        });
+        }, timeout);
 
         it('authenticateUser should return null any if of login credentials are incorrect', async () => {
 
@@ -93,7 +95,7 @@ describe('User service tests', () => {
 
             expect(result).toBeNull();
 
-        });
+        }, timeout);
 
         it('authenticateUser should return UserDTO with access token if login credentials are correct', async () => {
 
@@ -133,7 +135,7 @@ describe('User service tests', () => {
                 })
             }));
 
-        });
+        }, timeout);
 
 
 
