@@ -22,7 +22,7 @@ describe('Refresh Token service tests', () => {
             email: faker.internet.email(),
             password: fakePassword,
             repeatPassword: fakePassword,
-            username: '',
+            username: faker.internet.userName(),
             name: `${faker.person.firstName()} ${faker.person.lastName()}`
         };
 
