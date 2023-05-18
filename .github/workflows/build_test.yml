@@ -27,8 +27,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-
-
     environment:
       name: Development
 
@@ -43,10 +41,8 @@ jobs:
           echo "DATABASE_URL::: ${{ vars.DATABASE_URL }}"
           echo "JWT_ACCESS_TOKEN_SECRET::: ${{ vars.JWT_ACCESS_TOKEN_SECRET }}"
           echo "JWT_REFRESH_TOKEN_SECRET::: ${{ vars.JWT_REFRESH_TOKEN_SECRET }}"
-          echo "DATABASE_URL::: ${{ secrets.DATABASE_URL }}"
-          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ secrets.JWT_ACCESS_TOKEN_SECRET }}"
-          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ secrets.JWT_REFRESH_TOKEN_SECRET }}"
-                
+         
+
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
