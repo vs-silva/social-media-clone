@@ -38,9 +38,9 @@ jobs:
     steps:
       - name: Display custom environment variables
         run: |
-          echo "DATABASE_URL::: ${{ vars.DATABASE_URL }}"
-          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ vars.JWT_ACCESS_TOKEN_SECRET }}"
-          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ vars.JWT_REFRESH_TOKEN_SECRET }}"
+          echo "DATABASE_URL::: ${{ DATABASE_URL }}"
+          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ JWT_ACCESS_TOKEN_SECRET }}"
+          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ JWT_REFRESH_TOKEN_SECRET }}"
          
 
       - uses: actions/checkout@v3
