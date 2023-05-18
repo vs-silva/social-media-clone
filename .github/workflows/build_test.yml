@@ -26,11 +26,8 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-
-    env:
-      DATABASE_URL: ${{ env.DATABASE_URL }}
-      JWT_ACCESS_TOKEN_SECRET: ${{ env.JWT_ACCESS_TOKEN_SECRET }}
-      JWT_REFRESH_TOKEN_SECRET: ${{ env.JWT_REFRESH_TOKEN_SECRET }}
+    environment:
+      name: Development
 
     strategy:
       matrix:
@@ -50,7 +47,7 @@ jobs:
 
       - name: Display custom environment variables
         run: |
-          echo "DATABASE_URL::: ${{ env.DATABASE_URL }}"
-          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ env.JWT_ACCESS_TOKEN_SECRET }}"
-          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ env.JWT_REFRESH_TOKEN_SECRET }}"
+          echo "DATABASE_URL::: ${{ secrets.DATABASE_URL }}"
+          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ secrets.JWT_ACCESS_TOKEN_SECRET }}"
+          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ secrets.JWT_REFRESH_TOKEN_SECRET }}"
 
