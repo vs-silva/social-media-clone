@@ -4,7 +4,7 @@ import Settings from "../settings";
 const prisma = new PrismaClient({
     datasources: {
         db: {
-            url: Settings.dbConnectionString
+            url: Settings.dbConnectionString as string
         }
     }
 });
