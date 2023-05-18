@@ -30,19 +30,17 @@ jobs:
     environment:
       name: Development
 
+    env:
+      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      JWT_ACCESS_TOKEN_SECRET: ${{ vars.JWT_ACCESS_TOKEN_SECRET }}
+      JWT_REFRESH_TOKEN_SECRET: ${{ vars.JWT_REFRESH_TOKEN_SECRET }}
+
     strategy:
       matrix:
         node-version: [ 18.x, 19.x ]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Display custom environment variables
-        run: |
-          echo "DATABASE_URL::: ${{ DATABASE_URL }}"
-          echo "JWT_ACCESS_TOKEN_SECRET::: ${{ JWT_ACCESS_TOKEN_SECRET }}"
-          echo "JWT_REFRESH_TOKEN_SECRET::: ${{ JWT_REFRESH_TOKEN_SECRET }}"
-         
-
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
