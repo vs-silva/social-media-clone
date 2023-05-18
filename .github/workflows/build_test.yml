@@ -27,6 +27,14 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    environment:
+      name: Development
+
+    env:
+      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      JWT_ACCESS_TOKEN_SECRET: ${{ vars.JWT_ACCESS_TOKEN_SECRET }}
+      JWT_REFRESH_TOKEN_SECRET: ${{ vars.JWT_REFRESH_TOKEN_SECRET }}
+
     strategy:
       matrix:
         node-version: [ 18.x, 19.x ]
