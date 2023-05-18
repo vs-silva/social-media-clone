@@ -26,8 +26,8 @@ export default defineEventHandler( async (event: H3Event) => {
     };
 
     const secretsDTO: UserTokenSecretDTO = {
-        accessTokenSecret: Settings.accessTokenSecret,
-        refreshTokenSecret: Settings.refreshTokenSecret
+        accessTokenSecret: Settings.accessTokenSecret as string,
+        refreshTokenSecret: Settings.refreshTokenSecret as string
     };
 
     const user = await User.authenticateUser(authDTO,secretsDTO);

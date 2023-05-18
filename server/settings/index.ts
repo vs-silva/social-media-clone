@@ -1,7 +1,5 @@
-const config = useRuntimeConfig();
-
 export default {
-    dbConnectionString: config.databaseURL,
-    accessTokenSecret: config.jwtAccessToken,
-    refreshTokenSecret: config.jwtRefreshToken
+    dbConnectionString: process.env.DATABASE_URL,
+    accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
+    refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET
 };
