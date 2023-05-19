@@ -8,7 +8,7 @@
     <input :type="props.type" class="block px-4 w-full border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
            :placeholder="props.placeholder"
            :value="props.modelValue"
-           @input="(event) => emits(UiInputEventTypeConstants.INPUT_VALUE_UPDATE, event.target.value)"
+           @input="(event) => emits(UiInputEventTypeConstants.INPUT_VALUE_UPDATE, (event.target as HTMLInputElement).value)"
     />
 
   </div>
