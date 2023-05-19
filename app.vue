@@ -30,6 +30,10 @@
 
           </div>
 
+         <auth v-else/>
+
+
+
       </div>
 
   </div>
