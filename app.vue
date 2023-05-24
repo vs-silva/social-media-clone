@@ -3,7 +3,7 @@
 
       <div class="bg-white dark:bg-dim-900">
 
-          <div v-if="false" class="min-h-full">
+          <div v-if="user" class="min-h-full">
 
               <div class="grid grid-cols-12 mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-5">
 
@@ -40,6 +40,12 @@
 </template>
 
 <script setup>
+import Store from "./store";
+import {storeToRefs} from "pinia";
+
 const darkMode = ref(false);
+
+const userStore = Store.useUserStore();
+const { user } = storeToRefs(userStore);
 
 </script>

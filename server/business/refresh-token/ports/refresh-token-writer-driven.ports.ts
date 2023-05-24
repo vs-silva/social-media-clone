@@ -3,4 +3,5 @@ import type {RefreshTokenRegisterDTO} from "../core/dto/refresh-token-register.d
 
 export interface RefreshTokenWriterDrivenPorts {
     save(dto: RefreshTokenRegisterDTO): Promise<RefreshTokenEntity | null>;
+    remove(tokenId: string): Promise<RefreshTokenEntity | null>;
 }

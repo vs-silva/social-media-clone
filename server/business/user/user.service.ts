@@ -40,9 +40,21 @@ export function UserService(reader: UserReaderDrivenPorts, writer: UserWriterDri
         return await UserMapperService.mapToUserDTO(entity, tokens);
     }
 
+    async function removeUser(userId: string): Promise<UserDTO | null> {
+
+        const entity = await writer.remove(userId);
+
+        if(!entity) {
+            return null;
+        }
+
+        return await UserMapperService.mapToUserDTO(entity);
+    }
+
 
     return {
         registerUser,
-        authenticateUser
+        authenticateUser,
+        removeUser
     };
 }

@@ -33,7 +33,32 @@ export function DatabaseTokenWriterAdapter(): RefreshTokenWriterDrivenPorts {
 
     }
 
+    async function remove(tokenId: string): Promise<RefreshTokenEntity | null> {
+
+        try {
+
+            const token: RefreshToken = await engine.refreshToken.delete({
+                where: {
+                    id: tokenId
+                }
+            });
+
+            return <RefreshTokenEntity>{
+                id: token.id,
+                token: token.token,
+                userId: token.userId,
+                createdAt: token.createdAt,
+                updatedAt: token.updatedAt
+            };
+
+        } catch (error) {
+            return null;
+        }
+
+    }
+
     return {
-        save
+        save,
+        remove
     };
 }

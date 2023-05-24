@@ -2,7 +2,6 @@ import type {UserReaderDrivenPorts} from "../ports/user-reader-driven.ports";
 import type {UserEntity} from "../core/entity/user.entity";
 import DataProvider from "../../../data-provider";
 import {User} from "@prisma/client";
-import moment from "moment/moment";
 
 export function DatabaseUserReaderAdapter(): UserReaderDrivenPorts {
 
