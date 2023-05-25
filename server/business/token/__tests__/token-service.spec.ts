@@ -9,8 +9,6 @@ import type {RefreshTokenDTO} from "../core/dtos/refresh-token.dto";
 
 describe('Token service tests', () => {
 
-    it.todo('getRefreshToken should return should return null if provided token does not exists on the data provider');
-    it.todo('getRefreshToken should return an existent refresh token if provided token exists on the data provider');
     it.todo('validateRefreshToken should return true if provided refreshToken is valid and has not expired yet');
     it.todo('validateRefreshToken should return false if provided refreshToken is not valid and has expired');
 
@@ -108,6 +106,53 @@ describe('Token service tests', () => {
             fakeTokenRegistrationDTO.token = '';
 
             const result = await Token.saveRefreshToken(fakeTokenRegistrationDTO);
+            expect(result).toBeNull();
+
+        });
+
+    });
+
+    describe('getRefreshTokenByToken port tests', () => {
+
+
+        it('getRefreshTokenByToken should return a RefreshTokenDTO', async () => {
+
+            const savedRefreshTokenDTO = await Token.saveRefreshToken({
+               userId: faker.database.mongodbObjectId(),
+               token: `${faker.word.words(1)}_${faker.word.words(1)}`
+            });
+
+            const spy = vi.spyOn(Token, 'getRefreshTokenByToken');
+            const result = await Token.getRefreshTokenByToken(savedRefreshTokenDTO?.refreshToken as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(savedRefreshTokenDTO?.refreshToken as string);
+
+            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(expect.objectContaining(<RefreshTokenDTO>{
+                id: expect.any(String),
+                refreshToken: expect.any(String),
+                userId: expect.any(String),
+                tokenCreateDate: expect.any(String),
+                tokenLastUpdateDate: expect.any(String)
+            }));
+
+        });
+
+        it('getRefreshTokenByToken should return null if refreshToken is not found on data provider', async () => {
+
+            const fakeRefreshToken = `${faker.word.words(1)}_${faker.word.words(1)}`;
+
+            const result = await Token.getRefreshTokenByToken(fakeRefreshToken);
+            expect(result).toBeNull();
+
+        });
+
+        it('getRefreshTokenByToken should return null if refreshToken is not provided', async () => {
+
+            const fakeRefreshToken = '';
+
+            const result = await Token.getRefreshTokenByToken(fakeRefreshToken);
             expect(result).toBeNull();
 
         });

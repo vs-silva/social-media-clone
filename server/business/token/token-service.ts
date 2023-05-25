@@ -1,14 +1,16 @@
 import type {TokenDriverPorts} from "./ports/token-driver.ports";
 import type {TokenEngineDrivenPorts} from "./ports/token-engine-driven.ports";
 import type {TokenWriterDrivenPorts} from "./ports/token-writer-driven.ports";
+import type {TokenReaderDrivenPorts} from "./ports/token-reader-driven.ports";
 import {TokenLifespanConstants} from "./core/constants/token-lifespan.constants";
+import {TokenMapper} from "./core/mapper/token.mapper";
 import type {TokenDTO} from "./core/dtos/token.dto";
 import type {TokenGenerateRequestDTO} from "./core/dtos/token-generate-request.dto";
 import type {RefreshTokenDTO} from "./core/dtos/refresh-token.dto";
 import type {TokenRegisterRequestDTO} from "./core/dtos/token-register-request.dto";
 
 
-export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriterDrivenPorts): TokenDriverPorts {
+export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriterDrivenPorts, reader: TokenReaderDrivenPorts): TokenDriverPorts {
 
     async function generateTokens(dto: TokenGenerateRequestDTO): Promise<TokenDTO | null> {
 
@@ -43,17 +45,27 @@ export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriter
           return null;
         }
 
-        return <RefreshTokenDTO>{
-            id: entity.id,
-            userId: entity.userId,
-            refreshToken: entity.refreshToken,
-            tokenCreateDate: entity.createdAt.toString(),
-            tokenLastUpdateDate: entity.updatedAt.toString()
-        };
+        return TokenMapper.mapToRefreshTokenDTO(entity);
+    }
+
+    async function getRefreshTokenByToken(refreshToken: string): Promise<RefreshTokenDTO | null> {
+
+        if(!refreshToken) {
+            return null;
+        }
+
+        const entity = await reader.getBy(() => ({ token: refreshToken }));
+
+        if(!entity) {
+            return null;
+        }
+
+        return TokenMapper.mapToRefreshTokenDTO(entity);
     }
 
     return {
        generateTokens,
-       saveRefreshToken
+       saveRefreshToken,
+       getRefreshTokenByToken
     };
 }
