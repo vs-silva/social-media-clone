@@ -1,5 +1,6 @@
 import {H3Event, parseCookies, sendError} from "h3";
 import {RefreshTokenConstants} from "../../business/refresh-token/core/constants/refresh-token.constants";
+import RefreshToken from "../../business/refresh-token";
 
 export default defineEventHandler( async (event: H3Event) => {
 
@@ -13,8 +14,20 @@ export default defineEventHandler( async (event: H3Event) => {
         }));
     }
 
+    const refreshTokenDTO = await RefreshToken.getRefreshTokenByToken(refreshToken);
+
+    if(!refreshTokenDTO) {
+        return sendError(event, createError({
+            statusCode: 401,
+            statusMessage: 'Refresh token is invalid',
+        }));
+    }
+
+
+
+
     return {
-      hello: refreshToken
+      hello: refreshTokenDTO
     };
 
 });

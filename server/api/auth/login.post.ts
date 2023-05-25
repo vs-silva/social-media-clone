@@ -12,8 +12,6 @@ export default defineEventHandler( async (event: H3Event) => {
     const body = await readBody(event);
     const { username, password } = body as UserAuthDTO;
 
-    console.log('hey');
-
     //TODO: Update this to use JOI
     if(!username || !password) {
         return sendError(event, createError( {

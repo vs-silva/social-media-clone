@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, {JwtPayload} from "jsonwebtoken";
 import {TokenLifespanConstants} from "../../constants/token-lifespan.constants";
 import type {TokenHandlerInterface} from "./token-handler.interface";
 import type {UserAccessTokensDTO} from "../../dto/user-access-tokens.dto";
@@ -18,6 +18,22 @@ async function generateTokens(userId: string, secretDTO: UserTokenSecretDTO): Pr
     };
 }
 
+async function decodeRefreshToken(refreshToken: string, secretDTO: UserTokenSecretDTO): Promise<string | JwtPayload | null> {
+
+    try {
+
+        const result = engine.verify(refreshToken, secretDTO.refreshTokenSecret);
+
+        console.log(result);
+
+        return result;
+    } catch (error) {
+        return null;
+    }
+
+}
+
 export const TokenHandlerService: TokenHandlerInterface = {
-    generateTokens
+    generateTokens,
+    decodeRefreshToken
 };
