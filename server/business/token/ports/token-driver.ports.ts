@@ -7,4 +7,5 @@ export interface TokenDriverPorts {
     generateTokens(dto: TokenGenerateRequestDTO): Promise<TokenDTO | null>;
     saveRefreshToken(dto: TokenRegisterRequestDTO):Promise<RefreshTokenDTO | null>;
     getRefreshTokenByToken(refreshToken: string): Promise<RefreshTokenDTO | null>;
+    removeRefreshToken(refreshTokenId: string): Promise<RefreshTokenDTO | null>;
 }

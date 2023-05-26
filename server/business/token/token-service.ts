@@ -9,7 +9,6 @@ import type {TokenGenerateRequestDTO} from "./core/dtos/token-generate-request.d
 import type {RefreshTokenDTO} from "./core/dtos/refresh-token.dto";
 import type {TokenRegisterRequestDTO} from "./core/dtos/token-register-request.dto";
 
-
 export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriterDrivenPorts, reader: TokenReaderDrivenPorts): TokenDriverPorts {
 
     async function generateTokens(dto: TokenGenerateRequestDTO): Promise<TokenDTO | null> {
@@ -63,9 +62,25 @@ export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriter
         return TokenMapper.mapToRefreshTokenDTO(entity);
     }
 
+    async function removeRefreshToken(refreshTokenId: string): Promise<RefreshTokenDTO | null> {
+
+        if(!refreshTokenId) {
+            return null;
+        }
+
+        const entity = await writer.remove(refreshTokenId);
+
+        if(!entity) {
+            return null;
+        }
+
+        return TokenMapper.mapToRefreshTokenDTO(entity);
+    }
+
     return {
        generateTokens,
        saveRefreshToken,
-       getRefreshTokenByToken
+       getRefreshTokenByToken,
+       removeRefreshToken
     };
 }

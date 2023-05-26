@@ -159,6 +159,56 @@ describe('Token service tests', () => {
 
     });
 
+    describe('removeRefreshToken port tests', () => {
+
+        it('removeRefreshToken should remove an existent refreshToken from data provider and return the removed RefreshTokenDTO information', async () => {
+
+            const savedRefreshTokenDTO = await Token.saveRefreshToken({
+                userId: faker.database.mongodbObjectId(),
+                token: `${faker.word.words(1)}_${faker.word.words(1)}`
+            });
+
+            const spy = vi.spyOn(Token, 'removeRefreshToken');
+            const result = await Token.removeRefreshToken(savedRefreshTokenDTO?.id as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(savedRefreshTokenDTO?.id as string);
+
+            const refreshTokenResult = await Token.getRefreshTokenByToken(savedRefreshTokenDTO?.refreshToken as string);
+            expect(refreshTokenResult).toBeNull();
+
+            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(expect.objectContaining(<RefreshTokenDTO>{
+                id: expect.any(String),
+                refreshToken: expect.any(String),
+                userId: expect.any(String),
+                tokenCreateDate: expect.any(String),
+                tokenLastUpdateDate: expect.any(String)
+            }));
+
+        });
+
+        it('removeRefreshToken should return null if provided refreshTokenId is not existent on data provider', async () => {
+
+            const fakeRefreshTokenId = faker.database.mongodbObjectId();
+
+            const result = await Token.removeRefreshToken(fakeRefreshTokenId);
+            expect(result).toBeNull();
+
+        });
+
+        it('removeRefreshToken should return null if refreshTokenId is not provided', async () => {
+
+            const fakeRefreshTokenId = '';
+
+            const result = await Token.removeRefreshToken(fakeRefreshTokenId);
+            expect(result).toBeNull();
+
+        });
+
+
+    });
+
 
 
 });
