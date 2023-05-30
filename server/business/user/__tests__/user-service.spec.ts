@@ -190,7 +190,7 @@ describe('User service tests', () => {
 
     describe('getUserById port tests', () => {
 
-        it.only('getUserById should return a UserDTO if provided userId exist in data provider', async () => {
+        it('getUserById should return a UserDTO if provided userId exist in data provider', async () => {
 
             const fakePassword = faker.internet.password();
 
