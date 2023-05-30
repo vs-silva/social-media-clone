@@ -47,5 +47,10 @@ const darkMode = ref(false);
 
 const userStore = Store.useUserStore();
 const { user } = storeToRefs(userStore);
+const { refreshToken } = userStore;
+
+onBeforeMount(async () => {
+  await refreshToken();
+});
 
 </script>

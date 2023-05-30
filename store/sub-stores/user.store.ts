@@ -3,8 +3,6 @@ import {ApiEngine} from "../../api-engine";
 import Eventbus from "../../eventbus";
 import {ApiEngineResourceEndpointConstants} from "~/api-engine/constants/api-engine-resource-endpoint.constants";
 import type {UserAuthDTO} from "../../server/business/user/core/dto/user-auth.dto";
-import type {UserResponseDTO} from "../../server/business/user/core/dto/user-response.dto";
-
 
 export const UserStoreIdentifier = 'user-store';
 
@@ -56,6 +54,7 @@ export function UserStore() {
     return {
         userAuthData,
         user,
-        userAuthLoginHandler
+        userAuthLoginHandler,
+        refreshToken
     };
 }

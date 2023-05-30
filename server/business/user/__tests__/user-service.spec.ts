@@ -188,6 +188,43 @@ describe('User service tests', () => {
 
     });
 
+    describe('getUserById port tests', () => {
 
+        it.only('getUserById should return a UserDTO if provided userId exist in data provider', async () => {
+
+            const fakePassword = faker.internet.password();
+
+            const fakeRegisteredUser = await User.registerUser(<UserRegisterDTO>{
+                username: faker.internet.userName(),
+                name: faker.person.fullName(),
+                email: faker.internet.email(),
+                password: fakePassword,
+                repeatPassword: fakePassword
+            });
+
+            expect(fakeRegisteredUser).toBeTruthy();
+            expect(fakeRegisteredUser?.id.trim()).toBeTruthy();
+
+            const spy = vi.spyOn(User, 'getUserById');
+            const result = await User.getUserById(fakeRegisteredUser?.id as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(fakeRegisteredUser?.id as string);
+
+            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(expect.objectContaining(<UserDTO>{
+                id: expect.any(String),
+                email: expect.any(String),
+                name: expect.any(String),
+                username: expect.any(String),
+                password: expect.any(String),
+                profileImage: expect.any(String),
+                profileCreateDate: expect.any(String),
+                profileLastUpdateDate: expect.any(String)
+            }));
+
+        });
+
+    });
 
 });

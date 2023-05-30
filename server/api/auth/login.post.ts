@@ -1,12 +1,12 @@
 import {H3Event, sendError} from "h3";
-import User from "../../business/user";
 import Settings from "../../settings";
-import {UserAuthDTO} from "../../business/user/core/dto/user-auth.dto";
-import {UserTokenSecretDTO} from "../../business/user/core/dto/user-token-secret.dto";
-import {UserResponseDTO} from "../../business/user/core/dto/user-response.dto";
-import RefreshToken from "../../business/refresh-token";
-import {RefreshTokenRegisterDTO} from "../../business/refresh-token/core/dto/refresh-token-register.dto";
-import {RefreshTokenConstants} from "../../business/refresh-token/core/constants/refresh-token.constants";
+import User from "../../business/user";
+import Token from "../../business/token";
+import {TokenNamingConstants} from "../../business/token/core/constants/token-naming.constants";
+import type {UserAuthDTO} from "../../business/user/core/dto/user-auth.dto";
+import type {UserTokenSecretDTO} from "../../business/user/core/dto/user-token-secret.dto";
+import type {UserResponseDTO} from "../../business/user/core/dto/user-response.dto";
+import type {TokenRegisterRequestDTO} from "../../business/token/core/dtos/token-register-request.dto";
 
 export default defineEventHandler( async (event: H3Event) => {
     const body = await readBody(event);
@@ -39,9 +39,9 @@ export default defineEventHandler( async (event: H3Event) => {
         }));
     }
 
-    const refreshToken = await RefreshToken.saveRefreshToken(<RefreshTokenRegisterDTO>{
-       token: user.token?.refreshToken as string,
-       userId: user.id
+    const refreshToken = await Token.saveRefreshToken(<TokenRegisterRequestDTO> {
+        userId: user.id,
+        token: user.token?.refreshToken as string
     });
 
     if(!refreshToken) {
@@ -51,7 +51,7 @@ export default defineEventHandler( async (event: H3Event) => {
         }));
     }
 
-    setCookie(event, RefreshTokenConstants.REFRESH_TOKEN, refreshToken.token, {
+    setCookie(event, TokenNamingConstants.REFRESH_TOKEN, refreshToken.refreshToken, {
         httpOnly: true,
         sameSite: true
     });

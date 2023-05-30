@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, {JwtPayload} from "jsonwebtoken";
 import type {TokenEngineDrivenPorts} from "../ports/token-engine-driven.ports";
 import type {TokenSignRequestDTO} from "../core/dtos/token-sign-request.dto";
 import type {TokenDTO} from "../core/dtos/token.dto";
@@ -26,10 +26,8 @@ export function TokenEngineDrivenAdapter(): TokenEngineDrivenPorts {
 
         try {
 
-            const result =  jwt.verify(dto.refreshToken, dto.refreshTokenSecret);
-            console.log(result);
-
-            return true;
+            const result =  jwt.verify(dto.refreshToken, dto.refreshTokenSecret) as JwtPayload;
+            return !(!result.iat || !result.exp);
 
         } catch (error) {
             return false;
