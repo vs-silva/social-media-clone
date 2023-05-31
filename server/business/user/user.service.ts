@@ -1,6 +1,6 @@
 import {UserMapperService} from "./core/mappers/user-mapper.service";
-import {EncrypterService} from "./core/services/encrypter/encrypter.service";
-import Token from "../../business/token";
+import Token from "../token";
+import Encrypter from "../encrypter";
 import type {UserWriterDrivenPorts} from "./ports/user-writer-driven.ports";
 import type {UserReaderDrivenPorts} from "./ports/user-reader-driven.ports";
 import type {UserDriverPorts} from "./ports/user-driver.ports";
@@ -10,6 +10,7 @@ import type {UserAuthDTO} from "./core/dto/user-auth.dto";
 import type {UserTokenSecretDTO} from "./core/dto/user-token-secret.dto";
 import type {UserAccessTokensDTO} from "./core/dto/user-access-tokens.dto";
 import type {TokenGenerateRequestDTO} from "../../business/token/core/dtos/token-generate-request.dto";
+
 
 
 
@@ -36,7 +37,7 @@ export function UserService(reader: UserReaderDrivenPorts, writer: UserWriterDri
             return null;
         }
 
-        if(!await EncrypterService.isValidPassword(dto.password, entity.password)) {
+        if(!await Encrypter.isPasswordValid(dto.password, entity.password)) {
             return null;
         }
 

@@ -1,12 +1,13 @@
 import {ImageConstants} from "../constants/image.constants";
-import {EncrypterService} from "../services/encrypter/encrypter.service";
+import DateHandler from "../../../date-handler";
+import Encrypter from "../../../encrypter";
 import type {UserMapperInterface} from "./user-mapper.interface";
 import type {UserDTO} from "../dto/user.dto";
 import type {UserEntity} from "../entity/user.entity";
 import type {UserCreateUpdateDTO} from "../dto/user-create-update.dto";
 import type {UserRegisterDTO} from "../dto/user-register.dto";
 import type {UserAccessTokensDTO} from "../dto/user-access-tokens.dto";
-import DateHandler from "../../../date-handler";
+
 
 async function mapToUserDTO(entity: UserEntity, userTokens?: UserAccessTokensDTO): Promise<UserDTO> {
 
@@ -34,7 +35,7 @@ async function mapUserRegisterDTOToUserCreateUpdateDTO(dto: UserRegisterDTO): Pr
         name: dto.name,
         username: dto.username,
         profileImage: ImageConstants.PROFILE_IMAGE,
-        password: EncrypterService.hashPassword(dto.password)
+        password: Encrypter.hashPassword(dto.password)
     };
 }
 

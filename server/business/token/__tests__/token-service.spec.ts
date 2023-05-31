@@ -7,7 +7,6 @@ import type {TokenRegisterRequestDTO} from "../core/dtos/token-register-request.
 import type {RefreshTokenDTO} from "../core/dtos/refresh-token.dto";
 import type {TokenVerifyRequestDTO} from "../core/dtos/token-verify-request.dto";
 
-
 describe('Token service tests', () => {
 
     describe('generateTokens port tests', () => {
