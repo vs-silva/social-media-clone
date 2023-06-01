@@ -6,6 +6,7 @@ import type {TokenDTO} from "../core/dtos/token.dto";
 import type {TokenRegisterRequestDTO} from "../core/dtos/token-register-request.dto";
 import type {RefreshTokenDTO} from "../core/dtos/refresh-token.dto";
 import type {TokenVerifyRequestDTO} from "../core/dtos/token-verify-request.dto";
+import type {TokenValidationDTO} from "../core/dtos/token-validation.dto";
 
 describe('Token service tests', () => {
 
@@ -206,7 +207,7 @@ describe('Token service tests', () => {
 
     });
 
-    describe('validateRefreshToken port tests', () => {
+    describe('validateToken port tests', () => {
 
         const fakeGenerateTokenRequestDTO = <TokenGenerateRequestDTO>{
             userId: faker.database.mongodbObjectId(),
@@ -214,7 +215,7 @@ describe('Token service tests', () => {
             refreshSecret: `${faker.word.words(1)}_${faker.word.words(1)}`,
         };
 
-        it('validateRefreshToken should return true if provided refreshToken is valid and has not expired yet', async () => {
+        it('validateToken should return TokenValidationDTO and its isValid property should be true if provided token is valid and has not expired yet', async () => {
 
             const generatedToken = await Token.generateTokens(fakeGenerateTokenRequestDTO);
 
@@ -226,44 +227,41 @@ describe('Token service tests', () => {
             const refreshTokenResult = await Token.getRefreshTokenByToken(savedRefreshTokenDTO?.refreshToken as string);
 
             const fakePayload: TokenVerifyRequestDTO = {
-                refreshToken: refreshTokenResult?.refreshToken as string,
-                refreshTokenSecret: fakeGenerateTokenRequestDTO.refreshSecret
+                token: refreshTokenResult?.refreshToken as string,
+                tokenSecret: fakeGenerateTokenRequestDTO.refreshSecret
             };
 
-            const spy = vi.spyOn(Token, 'validateRefreshToken');
-            const result = await Token.validateRefreshToken(fakePayload);
+            const spy = vi.spyOn(Token, 'validateToken');
+            const result = await Token.validateToken(fakePayload);
 
             expect(spy).toHaveBeenCalledOnce();
             expect(spy).toHaveBeenCalledWith(fakePayload);
 
-            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(expect.objectContaining(<TokenValidationDTO>{
+                issuedAt: expect.any(Number),
+                issuedAtDate: expect.any(String),
+                expiredAt: expect.any(Number),
+                expireAtDate: expect.any(String),
+                isValid: expect.any(Boolean),
+                userId: expect.any(String)
+            }));
 
         });
 
-
-        it('validateRefreshToken should return false if provided refreshToken is not valid and has expired', async () => {
-
-            const savedRefreshTokenDTO = await Token.saveRefreshToken({
-                userId: fakeGenerateTokenRequestDTO.userId,
-                token: `${faker.word.words(1)}_${faker.word.words(1)}`
-            });
-
-            const refreshToken = await Token.getRefreshTokenByToken(savedRefreshTokenDTO?.refreshToken as string);
+        it('validateToken should return NULL if any of the TokenVerifyRequestDTO properties is not provided', async () => {
 
             const fakePayload: TokenVerifyRequestDTO = {
-                refreshToken: refreshToken?.refreshToken as string,
-                refreshTokenSecret: fakeGenerateTokenRequestDTO.refreshSecret
+                token: '',
+                tokenSecret: fakeGenerateTokenRequestDTO.refreshSecret
             };
 
-            const spy = vi.spyOn(Token, 'validateRefreshToken');
-            const result = await Token.validateRefreshToken(fakePayload);
+            const spy = vi.spyOn(Token, 'validateToken');
+            const result = await Token.validateToken(fakePayload);
 
             expect(spy).toHaveBeenCalledOnce();
             expect(spy).toHaveBeenCalledWith(fakePayload);
 
-            expect(result).toBeFalsy();
-
-
+            expect(result).toBeNull();
         });
 
     });

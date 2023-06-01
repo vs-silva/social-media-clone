@@ -1,4 +1,4 @@
 export interface TokenVerifyRequestDTO {
-    refreshToken: string;
-    refreshTokenSecret: string;
+    token: string;
+    tokenSecret: string;
 }

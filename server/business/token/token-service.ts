@@ -9,6 +9,7 @@ import type {TokenGenerateRequestDTO} from "./core/dtos/token-generate-request.d
 import type {RefreshTokenDTO} from "./core/dtos/refresh-token.dto";
 import type {TokenRegisterRequestDTO} from "./core/dtos/token-register-request.dto";
 import type {TokenVerifyRequestDTO} from "./core/dtos/token-verify-request.dto";
+import type {TokenValidationDTO} from "./core/dtos/token-validation.dto";
 
 export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriterDrivenPorts, reader: TokenReaderDrivenPorts): TokenDriverPorts {
 
@@ -78,10 +79,10 @@ export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriter
         return TokenMapper.mapToRefreshTokenDTO(entity);
     }
 
-    async function validateRefreshToken(dto: TokenVerifyRequestDTO): Promise<boolean> {
+    async function validateToken(dto: TokenVerifyRequestDTO): Promise<TokenValidationDTO | null> {
 
-        if(!dto.refreshToken || !dto.refreshTokenSecret) {
-            return false;
+        if(!dto.token || !dto.tokenSecret) {
+            return null;
         }
 
         return await engine.verify(dto);
@@ -93,6 +94,6 @@ export function TokenService(engine: TokenEngineDrivenPorts, writer: TokenWriter
        saveRefreshToken,
        getRefreshTokenByToken,
        removeRefreshToken,
-       validateRefreshToken
+       validateToken
     };
 }

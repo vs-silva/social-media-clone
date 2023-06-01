@@ -36,12 +36,12 @@ export default defineEventHandler( async (event: H3Event) => {
         }));
     }
 
-    const isValid = await Token.validateRefreshToken(<TokenVerifyRequestDTO>{
-       refreshToken: refreshTokenDTO.refreshToken,
-       refreshTokenSecret: Settings.refreshTokenSecret
+    const tokenValidationResult = await Token.validateToken(<TokenVerifyRequestDTO>{
+       token: refreshTokenDTO.refreshToken,
+       tokenSecret: Settings.refreshTokenSecret
     });
 
-    if(!isValid) {
+    if(!tokenValidationResult || !tokenValidationResult?.isValid) {
         return sendError(event, createError({
             statusCode: 401,
             statusMessage: 'Refresh token is invalid',

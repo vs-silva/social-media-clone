@@ -1,6 +1,6 @@
 import {H3Event, sendError} from "h3";
 import User from "../../business/user";
-import {UserRegisterDTO} from "../../business/user/core/dto/user-register.dto";
+import type {UserRegisterDTO} from "../../business/user/core/dto/user-register.dto";
 
 export default defineEventHandler(async (event: H3Event) => {
     const body = await readBody(event);

@@ -90,7 +90,7 @@ describe('Encrypter service tests', () => {
 
             expect(result).toBeNull();
         });
-        
+
     });
 
 });
