@@ -48,7 +48,9 @@ describe('User service tests', () => {
             profileLastUpdateDate: expect.any(String)
         }));
 
-    }, timeout);
+        await User.removeUser(result?.id as string);
+
+    }, timeout)
 
     describe('authenticateUser port tests', () => {
 
@@ -95,6 +97,8 @@ describe('User service tests', () => {
 
             expect(result).toBeNull();
 
+            await User.removeUser(userDTO?.id as string);
+
         }, timeout);
 
         it('authenticateUser should return UserDTO with access token if login credentials are correct', async () => {
@@ -135,12 +139,92 @@ describe('User service tests', () => {
                 })
             }));
 
+            await User.removeUser(userDTO?.id as string);
+
         }, timeout);
-
-
 
     });
 
+    describe('removeUser port tests', () => {
 
+        it('removeUser should return null if provided userId is not registered', async () => {
+
+            const fakeUserId = faker.database.mongodbObjectId();
+
+            const spy = vi.spyOn(User, 'removeUser');
+            const result = await User.removeUser(fakeUserId);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(fakeUserId);
+
+            expect(result).toBeNull();
+        }, timeout );
+
+        it('removeUser should return the removed UserDTO if provided userId is registered', async () => {
+
+            fakeNewUser.username = faker.internet.userName();
+            const userDTO = await User.registerUser(fakeNewUser);
+
+            const spy = vi.spyOn(User, 'removeUser');
+            const result = await User.removeUser(userDTO?.id as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(userDTO?.id as string);
+
+            expect(result).toBeTruthy();
+
+            expect(result).toStrictEqual(expect.objectContaining(<UserDTO>{
+                id: expect.any(String),
+                email: expect.any(String),
+                name: expect.any(String),
+                username: expect.any(String),
+                password: expect.any(String),
+                profileImage: expect.any(String),
+                profileCreateDate: expect.any(String),
+                profileLastUpdateDate: expect.any(String)
+            }));
+
+        }, timeout );
+
+    });
+
+    describe('getUserById port tests', () => {
+
+        it('getUserById should return a UserDTO if provided userId exist in data provider', async () => {
+
+            const fakePassword = faker.internet.password();
+
+            const fakeRegisteredUser = await User.registerUser(<UserRegisterDTO>{
+                username: faker.internet.userName(),
+                name: faker.person.fullName(),
+                email: faker.internet.email(),
+                password: fakePassword,
+                repeatPassword: fakePassword
+            });
+
+            expect(fakeRegisteredUser).toBeTruthy();
+            expect(fakeRegisteredUser?.id.trim()).toBeTruthy();
+
+            const spy = vi.spyOn(User, 'getUserById');
+            const result = await User.getUserById(fakeRegisteredUser?.id as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(fakeRegisteredUser?.id as string);
+
+            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(expect.objectContaining(<UserDTO>{
+                id: expect.any(String),
+                email: expect.any(String),
+                name: expect.any(String),
+                username: expect.any(String),
+                password: expect.any(String),
+                profileImage: expect.any(String),
+                profileCreateDate: expect.any(String),
+                profileLastUpdateDate: expect.any(String)
+            }));
+
+        });
+
+    });
 
 });

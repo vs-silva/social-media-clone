@@ -6,4 +6,6 @@ import type {UserTokenSecretDTO} from "../core/dto/user-token-secret.dto";
 export interface UserDriverPorts {
     registerUser(dto: UserRegisterDTO):Promise<UserDTO | null>;
     authenticateUser(dto: UserAuthDTO, secretDTO: UserTokenSecretDTO): Promise<UserDTO | null>;
+    removeUser(userId: string): Promise<UserDTO | null>;
+    getUserById(userId: string): Promise<UserDTO | null>;
 }

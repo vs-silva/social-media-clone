@@ -3,4 +3,5 @@ import type {UserCreateUpdateDTO} from "../core/dto/user-create-update.dto";
 
 export interface UserWriterDrivenPorts {
     save(dto: UserCreateUpdateDTO): Promise<UserEntity | null>;
+    remove(userId: string): Promise<UserEntity | null>;
 }

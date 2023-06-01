@@ -38,7 +38,35 @@ export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
 
     }
 
+    async function remove(userId: string): Promise<UserEntity | null> {
+
+        try {
+
+            const user: User =  await engine.user.delete({
+                where: {
+                    id: userId
+                }
+            });
+
+            return <UserEntity> {
+                id: user.id,
+                email: user.email,
+                name: user.name as string,
+                username: user.username,
+                password: user.password,
+                profileImage: user.profileImage,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            };
+
+        } catch (error) {
+            return null;
+        }
+
+    }
+
     return {
-        save
+        save,
+        remove
     };
 }
