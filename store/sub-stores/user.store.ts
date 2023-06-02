@@ -65,6 +65,7 @@ export function UserStore() {
     return {
         userAuthData,
         user,
+        accessToken,
         userAuthLoginHandler,
         refreshToken,
         getUser
