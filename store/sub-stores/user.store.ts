@@ -1,10 +1,12 @@
 import {AxiosInstance} from "axios/index";
 import {ApiEngine} from "../../api-engine";
+import jwt_decode from "jwt-decode";
 import Eventbus from "../../eventbus";
+import User from "../../integration/user";
 import {ApiEngineResourceEndpointConstants} from "../../api-engine/constants/api-engine-resource-endpoint.constants";
-import {ApiEngineHeaderConstants} from "../../api-engine/constants/api-engine-header.constants";
-import {ApiEngineResponseFieldsConstants} from "../../api-engine/constants/api-engine-response-fields.constants";
 import type {UserAuthDTO} from "../../server/business/user/core/dto/user-auth.dto";
+import type {UserDTO} from "../../server/business/user/core/dto/user.dto";
+import type {UserResponseDTO} from "../../server/business/user/core/dto/user-response.dto";
 
 export const UserStoreIdentifier = 'user-store';
 
@@ -17,38 +19,35 @@ export function UserStore() {
         password: ''
     });
 
-    const user = ref(null);
-    const accessToken = ref(null);
+    const user = ref<UserDTO | UserResponseDTO | null>(null);
+    const accessToken = ref<string | null>(null);
+    const accessTokenExpireTime = ref(0);
 
     async function userAuthLoginHandler(dto: UserAuthDTO): Promise<void> {
 
-        try {
+        const response = await User.login(<UserAuthDTO>{
+            username: dto.username,
+            password: dto.password
+        });
 
-            const response = await apiEngine.post(ApiEngineResourceEndpointConstants.LOGIN, <UserAuthDTO>{
-                username: dto.username,
-                password: dto.password
-            });
-
-            user.value = response.data;
-
-        } catch (error) {
-            console.log(error); //TODO: Toaster Message for this
+        if(!response) {
             user.value = null;
             return;
         }
+
+        user.value = response;
     }
 
     async function refreshToken(): Promise<void> {
 
-        try {
-            const response = await apiEngine.get(ApiEngineResourceEndpointConstants.REFRESH);
-            accessToken.value = response.data[`${ApiEngineResponseFieldsConstants.ACCESS_TOKEN}`];
-            apiEngine.defaults.headers.common[`${ApiEngineHeaderConstants.AUTHORIZATION}`] = `Bearer ${accessToken.value}`;
-        } catch (error) {
+        const response = await User.refreshToken();
+
+        if(!response) {
             accessToken.value = null;
             return;
         }
 
+        accessToken.value = response;
     }
 
     async function getUser(): Promise<void> {
@@ -60,6 +59,20 @@ export function UserStore() {
             user.value = null;
         }
 
+    }
+
+    async function autoRenewAccessToken(): Promise<void> {
+
+        if(!accessToken.value) {
+            return;
+        }
+
+        const decodedAccessToken = jwt_decode(accessToken.value as unknown as string) as {userId: string, iat: number, exp: number};
+        const timeoutTimer = decodedAccessToken.exp - 60000;
+
+        setTimeout(async () => {
+            await refreshToken();
+        }, timeoutTimer);
     }
 
     return {

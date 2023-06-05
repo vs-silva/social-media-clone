@@ -4,6 +4,7 @@ import type {TokenRegisterRequestDTO} from "../core/dtos/token-register-request.
 import type {TokenVerifyRequestDTO} from "../core/dtos/token-verify-request.dto";
 import type {RefreshTokenDTO} from "../core/dtos/refresh-token.dto";
 import type {TokenValidationDTO} from "../core/dtos/token-validation.dto";
+import type {TokenDecodeDTO} from "../core/dtos/token-decode.dto";
 
 export interface TokenDriverPorts {
     generateTokens(dto: TokenGenerateRequestDTO): Promise<TokenDTO | null>;
@@ -11,4 +12,5 @@ export interface TokenDriverPorts {
     getRefreshTokenByToken(refreshToken: string): Promise<RefreshTokenDTO | null>;
     removeRefreshToken(refreshTokenId: string): Promise<RefreshTokenDTO | null>;
     validateToken(dto: TokenVerifyRequestDTO): Promise<TokenValidationDTO | null>;
+    decodeToken(token: string): Promise<TokenDecodeDTO | null>;
 }

@@ -7,6 +7,7 @@ import type {TokenRegisterRequestDTO} from "../core/dtos/token-register-request.
 import type {RefreshTokenDTO} from "../core/dtos/refresh-token.dto";
 import type {TokenVerifyRequestDTO} from "../core/dtos/token-verify-request.dto";
 import type {TokenValidationDTO} from "../core/dtos/token-validation.dto";
+import type {TokenDecodeDTO} from "../core/dtos/token-decode.dto";
 
 describe('Token service tests', () => {
 
@@ -260,6 +261,43 @@ describe('Token service tests', () => {
 
             expect(spy).toHaveBeenCalledOnce();
             expect(spy).toHaveBeenCalledWith(fakePayload);
+
+            expect(result).toBeNull();
+        });
+
+    });
+
+    describe('decodeToken port tests', () => {
+
+        const fakeGenerateTokenRequestDTO = <TokenGenerateRequestDTO>{
+            userId: faker.database.mongodbObjectId(),
+            accessSecret: `${faker.word.words(1)}_${faker.word.words(1)}`,
+            refreshSecret: `${faker.word.words(1)}_${faker.word.words(1)}`,
+        };
+
+        it('decodeToken should return TokenDecodeDTO if provided token is valid', async () => {
+
+            const generatedToken = await Token.generateTokens(fakeGenerateTokenRequestDTO);
+
+            const spy = vi.spyOn(Token, 'decodeToken');
+            const result = await Token.decodeToken(generatedToken?.accessToken as string);
+
+            expect(spy).toHaveBeenCalledOnce();
+            expect(spy).toHaveBeenCalledWith(generatedToken?.accessToken as string);
+
+            expect(result).toBeTruthy();
+            expect(result).toStrictEqual(<TokenDecodeDTO>{
+                userId: expect.any(String),
+                issuedAt: expect.any(Number),
+                expiredAt: expect.any(Number)
+            });
+
+        });
+
+        it('decodeToken should return NULL if invalid empty string token is provided', async () => {
+
+            const fakeToken = ' ';
+            const result = await Token.decodeToken(fakeToken);
 
             expect(result).toBeNull();
         });
