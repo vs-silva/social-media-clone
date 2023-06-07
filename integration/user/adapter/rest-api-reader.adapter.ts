@@ -3,13 +3,13 @@ import {AxiosInstance} from "axios";
 import {ApiEngine} from "../../../api-engine";
 import {ApiEngineHeaderConstants} from "../../../api-engine/constants/api-engine-header.constants";
 import Eventbus from "../../../eventbus";
-import {ApiEngineResourceEndpointConstants} from "../../../api-engine/constants/api-engine-resource-endpoint.constants";
 import {UserServiceResponseFieldsConstants} from "../core/constants/user-service-response-fields.constants";
 import type {UserResponseDTO} from "../../../server/business/user/core/dto/user-response.dto";
+import {UserServiceResourcesConstants} from "../core/constants/user-service-resources.constants";
 
 export function RestApiReaderAdapter(): UserServiceReaderDrivenPorts {
 
-    const apiEngine: AxiosInstance = ApiEngine(ApiEngineResourceEndpointConstants.ROOT, Eventbus);
+    const apiEngine: AxiosInstance = ApiEngine(UserServiceResourcesConstants.ROOT, Eventbus);
 
     async function refresh(resource: string): Promise<string | null> {
 
