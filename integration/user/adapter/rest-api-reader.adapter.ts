@@ -5,6 +5,7 @@ import {ApiEngineHeaderConstants} from "../../../api-engine/constants/api-engine
 import Eventbus from "../../../eventbus";
 import {ApiEngineResourceEndpointConstants} from "../../../api-engine/constants/api-engine-resource-endpoint.constants";
 import {UserServiceResponseFieldsConstants} from "../core/constants/user-service-response-fields.constants";
+import type {UserResponseDTO} from "../../../server/business/user/core/dto/user-response.dto";
 
 export function RestApiReaderAdapter(): UserServiceReaderDrivenPorts {
 
@@ -24,7 +25,19 @@ export function RestApiReaderAdapter(): UserServiceReaderDrivenPorts {
         }
     }
 
+    async function getUserInfo(resource: string): Promise<UserResponseDTO | null> {
+
+        try {
+            const response = await apiEngine.get(resource);
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+
+    }
+
     return {
-      refresh
+      refresh,
+      getUserInfo
     };
 }

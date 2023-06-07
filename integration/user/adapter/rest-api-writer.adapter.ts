@@ -3,19 +3,19 @@ import {AxiosInstance} from "axios";
 import {ApiEngine} from "../../../api-engine";
 import {ApiEngineResourceEndpointConstants} from "../../../api-engine/constants/api-engine-resource-endpoint.constants";
 import Eventbus from "../../../eventbus";
-import type {UserDTO} from "../../../server/business/user/core/dto/user.dto";
 import type {UserRegisterDTO} from "../../../server/business/user/core/dto/user-register.dto";
 import type {UserAuthDTO} from "../../../server/business/user/core/dto/user-auth.dto";
+import type {UserResponseDTO} from "../../../server/business/user/core/dto/user-response.dto";
 
 export function RestApiWriterAdapter(): UserServiceWriterDrivenPorts {
 
     const apiEngine: AxiosInstance = ApiEngine(ApiEngineResourceEndpointConstants.ROOT, Eventbus);
     
-    async function register(dto: UserRegisterDTO, resource: string): Promise<UserDTO | null> {
+    async function register(dto: UserRegisterDTO, resource: string): Promise<UserResponseDTO | null> {
         
         try {
            const response = await apiEngine.post(resource, dto);
-           return response.data as UserDTO;
+           return response.data as UserResponseDTO;
         }
         catch (error) {
             return null;
@@ -23,11 +23,11 @@ export function RestApiWriterAdapter(): UserServiceWriterDrivenPorts {
 
     }
 
-    async function login(dto: UserAuthDTO, resource: string): Promise<UserDTO | null> {
+    async function login(dto: UserAuthDTO, resource: string): Promise<UserResponseDTO | null> {
 
         try {
             const response = await apiEngine.post(resource, dto);
-            return response.data as UserDTO;
+            return response.data as UserResponseDTO;
         }
         catch (error) {
             return null;
