@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "start": "nuxt build && nuxt start",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -35,6 +36,7 @@
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
     "mitt": "^3.0.0",
     "moment": "^2.29.4",
     "pinia": "^2.1.3",

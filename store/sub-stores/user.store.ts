@@ -1,70 +1,82 @@
-import {AxiosInstance} from "axios/index";
-import {ApiEngine} from "../../api-engine";
-import Eventbus from "../../eventbus";
-import {ApiEngineResourceEndpointConstants} from "../../api-engine/constants/api-engine-resource-endpoint.constants";
-import {ApiEngineHeaderConstants} from "../../api-engine/constants/api-engine-header.constants";
-import {ApiEngineResponseFieldsConstants} from "../../api-engine/constants/api-engine-response-fields.constants";
 import type {UserAuthDTO} from "../../server/business/user/core/dto/user-auth.dto";
+import type {UserResponseDTO} from "../../server/business/user/core/dto/user-response.dto";
+import User from "../../integration/user";
 
 export const UserStoreIdentifier = 'user-store';
 
 export function UserStore() {
-
-    const apiEngine: AxiosInstance = ApiEngine(ApiEngineResourceEndpointConstants.ROOT, Eventbus);
 
     const userAuthData = ref(<UserAuthDTO>{
         username: '',
         password: ''
     });
 
-    const user = ref(null);
-    const accessToken = ref(null);
+    const user = ref< UserResponseDTO | null>(null);
+    const accessToken = ref<string | null>(null);
 
     async function userAuthLoginHandler(dto: UserAuthDTO): Promise<void> {
 
-        try {
+        const response = await User.login(<UserAuthDTO>{
+            username: dto.username,
+            password: dto.password
+        });
 
-            const response = await apiEngine.post(ApiEngineResourceEndpointConstants.LOGIN, <UserAuthDTO>{
-                username: dto.username,
-                password: dto.password
-            });
-
-            user.value = response.data;
-
-        } catch (error) {
-            console.log(error); //TODO: Toaster Message for this
+        if(!response) {
             user.value = null;
             return;
         }
+
+        user.value = response;
     }
 
     async function refreshToken(): Promise<void> {
 
-        try {
-            const response = await apiEngine.get(ApiEngineResourceEndpointConstants.REFRESH);
-            accessToken.value = response.data[`${ApiEngineResponseFieldsConstants.ACCESS_TOKEN}`];
-            apiEngine.defaults.headers.common[`${ApiEngineHeaderConstants.AUTHORIZATION}`] = `Bearer ${accessToken.value}`;
-        } catch (error) {
+        const response = await User.refreshToken();
+
+        if(!response) {
             accessToken.value = null;
             return;
         }
 
+        accessToken.value = response;
+        await renewAccessToken();
     }
 
     async function getUser(): Promise<void> {
 
-        try {
-            const response = await apiEngine.get(ApiEngineResourceEndpointConstants.USER);
-            user.value = response.data;
-        } catch (error) {
+        const response = await User.getUser();
+
+        if(!response) {
             user.value = null;
+            return;
         }
+
+        user.value = response;
+
+    }
+
+    async function renewAccessToken(): Promise<void> {
+
+        if(!accessToken.value) {
+            return;
+        }
+
+        const result = await User.decodeAccessToken(accessToken.value);
+
+        if(!result) {
+            return;
+        }
+
+        setTimeout(async () => {
+            await refreshToken();
+        }, result.renewCountTimer);
 
     }
 
     return {
         userAuthData,
         user,
+        accessToken,
         userAuthLoginHandler,
         refreshToken,
         getUser

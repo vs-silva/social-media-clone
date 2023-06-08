@@ -3,6 +3,8 @@
 
       <div class="bg-white dark:bg-dim-900">
 
+          <loading-animation v-if="loading"/>
+
           <div v-if="user" class="min-h-full">
 
               <div class="grid grid-cols-12 mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-5">
@@ -42,16 +44,36 @@
 <script setup>
 import Store from "./store";
 import {storeToRefs} from "pinia";
+import Eventbus from "~/eventbus";
+import {ApiEngineEventTypeConstants} from "./api-engine/constants/api-engine-event-type.constants";
 
 const darkMode = ref(false);
+const loading = ref(false);
 
 const userStore = Store.useUserStore();
-const { user } = storeToRefs(userStore);
+const { user, accessToken } = storeToRefs(userStore);
 const { refreshToken, getUser } = userStore;
 
 onBeforeMount(async () => {
+  Eventbus.on(ApiEngineEventTypeConstants.SERVICE_REQUEST_STARTED, () => {
+    loading.value = true;
+  });
+
+  Eventbus.on(ApiEngineEventTypeConstants.SERVICE_REQUEST_ENDED, () => {
+    loading.value = false;
+  });
+
   await refreshToken();
-  await getUser();
+
+  if(accessToken.value) {
+    await getUser();
+  }
+
 });
 
+
+onDeactivated(() => {
+  Eventbus.off(ApiEngineEventTypeConstants.SERVICE_REQUEST_STARTED);
+  Eventbus.off(ApiEngineEventTypeConstants.SERVICE_REQUEST_ENDED);
+});
 </script>

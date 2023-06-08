@@ -1,9 +1,12 @@
 import jwt, {JwtPayload} from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 import type {TokenEngineDrivenPorts} from "../ports/token-engine-driven.ports";
 import type {TokenSignRequestDTO} from "../core/dtos/token-sign-request.dto";
 import type {TokenDTO} from "../core/dtos/token.dto";
 import type {TokenVerifyRequestDTO} from "../core/dtos/token-verify-request.dto";
-import {TokenValidationDTO} from "~/server/business/token/core/dtos/token-validation.dto";
+import type {TokenValidationDTO} from "../core/dtos/token-validation.dto";
+import type {TokenDecodeDTO} from "../core/dtos/token-decode.dto";
+import {TokenDecodeEntity} from "~/server/business/token/core/entities/token-decode.entity";
 
 export function TokenEngineDrivenAdapter(): TokenEngineDrivenPorts {
 
@@ -57,8 +60,20 @@ export function TokenEngineDrivenAdapter(): TokenEngineDrivenPorts {
         }
     }
 
+    async function decode(token: string): Promise<TokenDecodeDTO> {
+
+        const decodeResult = jwt_decode(token) as TokenDecodeEntity;
+
+        return <TokenDecodeDTO>{
+          userId: decodeResult.userId,
+          expiredAt: decodeResult.exp,
+          issuedAt: decodeResult.iat
+        };
+    }
+
     return {
         sign,
-        verify
+        verify,
+        decode
     };
 }

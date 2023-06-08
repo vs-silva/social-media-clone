@@ -4,7 +4,7 @@ import Token from "../../business/token";
 import User from "../../business/user";
 import {TokenNamingConstants} from "../../business/token/core/constants/token-naming.constants";
 import type {TokenVerifyRequestDTO} from "../../business/token/core/dtos/token-verify-request.dto";
-import {TokenGenerateRequestDTO} from "~/server/business/token/core/dtos/token-generate-request.dto";
+import type {TokenGenerateRequestDTO} from "../../business/token/core/dtos/token-generate-request.dto";
 
 export default defineEventHandler( async (event: H3Event) => {
 
