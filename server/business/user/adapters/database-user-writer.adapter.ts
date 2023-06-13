@@ -29,11 +29,7 @@ export function DatabaseUserWriterAdapter(): UserWriterDrivenPorts {
             };
 
         } catch (error) {
-
-            //TODO: HANDLE THE ERROR
-            console.log(error);
             return null;
-
         }
 
     }
