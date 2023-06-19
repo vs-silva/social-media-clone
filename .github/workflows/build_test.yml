@@ -38,6 +38,9 @@ jobs:
       DATABASE_URL: ${{ vars.DATABASE_URL }}
       JWT_ACCESS_TOKEN_SECRET: ${{ vars.JWT_ACCESS_TOKEN_SECRET }}
       JWT_REFRESH_TOKEN_SECRET: ${{ vars.JWT_REFRESH_TOKEN_SECRET }}
+      MEDIA_CLOUD_NAME: ${{ vars.MEDIA_CLOUD_NAME }}
+      MEDIA_CLOUD_API_KEY: ${{ vars.MEDIA_CLOUD_API_KEY }}
+      MEDIA_CLOUD_API_SECRET: ${{ vars.MEDIA_CLOUD_API_SECRET }}
 
     strategy:
       matrix:
