@@ -4,8 +4,8 @@ import type {TweetCreateDTO} from "./core/dtos/tweet-create.dto";
 import type {TweetDTO} from "./core/dtos/tweet.dto";
 import {TweetMapperService} from "./core/mappers/tweet-mapper.service";
 import MediaFile from "../media-file";
-import type {MediaFileCreateDTO} from "../media-file/core/dtos/media-file-create,dto";
-import {MediaFileConstants} from "~/server/business/media-file/core/constants/media-file.constants";
+import type {MediaFileCreateDTO} from "../media-file/core/dtos/media-file-create.dto";
+import {MediaFileConstants} from "../media-file/core/constants/media-file.constants";
 
 export function TweetService(writer: TweetWriterDrivenPorts): TweetDriverPorts {
 

@@ -1,9 +1,8 @@
 import type {MediaFileDriverPorts} from "./ports/media-file-driver.ports";
 import type {MediaFileWriterDrivenPorts} from "./ports/media-file-writer-driven.ports";
 import type {MediaFileCloudApiDrivenPorts} from "./ports/media-file-cloud-api-driven.ports";
-import type {MediaFileCreateDTO} from "./core/dtos/media-file-create,dto";
+import type {MediaFileCreateDTO} from "./core/dtos/media-file-create.dto";
 import type {MediaFileDTO} from "./core/dtos/media-file.dto";
-
 import {MediaFileMapper} from "./core/mappers/media-file.mapper";
 import type {MediaFileResourceCreateDTO} from "./core/dtos/media-file-resource-create.dto";
 

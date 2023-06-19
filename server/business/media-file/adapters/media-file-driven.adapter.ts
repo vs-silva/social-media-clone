@@ -1,5 +1,4 @@
 import type {MediaFileWriterDrivenPorts} from "../ports/media-file-writer-driven.ports";
-import type {MediaFileCreateDTO} from "../core/dtos/media-file-create,dto";
 import type {MediaFileEntity} from "../core/entities/media-file.entity";
 import {MediaFile} from "@prisma/client";
 import DataProvider from "../../../data-provider";

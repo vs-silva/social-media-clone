@@ -1,7 +1,7 @@
 import {describe, it, vi, expect} from "vitest";
 import {faker} from "@faker-js/faker";
 import MediaFile from "../index";
-import type {MediaFileCreateDTO} from "../core/dtos/media-file-create,dto";
+import type {MediaFileCreateDTO} from "../core/dtos/media-file-create.dto";
 import type {MediaFileDTO} from "../core/dtos/media-file.dto";
 
 describe('Media files service tests', () => {
