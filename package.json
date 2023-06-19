@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest --environment jsdom",
-    "test:cov": "vitest run --environment jsdom --coverage"
+    "test:cov": "vitest run --environment jsdom --coverage",
+    "db:migration": "npx prisma db push"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.0",
@@ -36,6 +37,7 @@
     "@prisma/client": "^4.14.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.37.1",
     "formidable": "^2.1.2",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",

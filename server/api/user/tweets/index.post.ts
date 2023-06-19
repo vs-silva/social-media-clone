@@ -33,15 +33,13 @@ export default defineEventHandler(async (event: H3Event) => {
         });
     });
 
-    //create tweet
     const userId = refreshTokenDTO.userId;
 
-    const tweetCreate = <TweetCreateDTO>{
+    const tweetDTO = await Tweets.createTweet(<TweetCreateDTO>{
         authorId: userId,
-        text: formResponse.fields[TweetFormFieldConstants.TWEET]
-    };
-
-    const tweetDTO = await Tweets.createTweet(tweetCreate);
+        text: formResponse.fields[TweetFormFieldConstants.TWEET],
+        files: formResponse.files
+    });
 
     if(!tweetDTO) {
         return sendError(event, createError({
@@ -49,7 +47,6 @@ export default defineEventHandler(async (event: H3Event) => {
             statusMessage: 'Internal server error',
         }));
     }
-
 
     return <TweetResponseDTO>{
         id: tweetDTO.id,
