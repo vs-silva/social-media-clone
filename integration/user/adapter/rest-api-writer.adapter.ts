@@ -14,6 +14,7 @@ export function RestApiWriterAdapter(): UserServiceWriterDrivenPorts {
     async function register(dto: UserRegisterDTO, resource: string): Promise<UserResponseDTO | null> {
         
         try {
+
            const response = await apiEngine.post(resource, dto);
            return response.data as UserResponseDTO;
         }
