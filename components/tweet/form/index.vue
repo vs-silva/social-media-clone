@@ -1,15 +1,29 @@
 <template>
   <div>
-    <tweet-form-input :user="props.user as UserResponseDTO"
-                      :submitHandler="props.submitHandler"/>
+
+    <div  v-if="loading" class="flex items-center justify-center py-6">
+      <spinner />
+    </div>
+
+     <div v-else>
+       <tweet-form-input :user="props.user as UserResponseDTO"
+       @submit-tweet="(tweetData) =>  submitHandler({
+        text: tweetData.tweetText,
+        mediaFile: [tweetData.mediaFile]
+       })"/>
+     </div>
+
+
   </div>
 </template>
 
 <script setup lang="ts">
 
-import {PropType} from "@vue/runtime-core";
+import {PropType, ref} from "@vue/runtime-core";
 import type {UserResponseDTO} from "../../../server/business/user/core/dto/user-response.dto";
 import type {TweetRequestDTO} from "../../../server/business/tweets/core/dtos/tweet-request.dto";
+
+const loading = ref(false);
 
 const props = defineProps({
   user: {

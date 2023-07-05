@@ -48,6 +48,8 @@ export default defineEventHandler(async (event: H3Event) => {
         }));
     }
 
+    console.log('HERE::::',tweetDTO);
+
     return <TweetResponseDTO>{
         id: tweetDTO.id,
         text: tweetDTO.text

@@ -1,3 +1,4 @@
 export interface TweetRequestDTO {
-    text: string;
+    text?: string;
+    mediaFile?: File[];
 }

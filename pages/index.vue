@@ -16,15 +16,15 @@
 import Store from "./../store";
 import {storeToRefs} from "pinia";
 import type {UserResponseDTO} from "../server/business/user/core/dto/user-response.dto";
-
-const loading = ref(false);
+import {ref} from "@vue/runtime-core";
 
 const userStore = Store.useUserStore();
-const tweetStore = Store.useTweetStore();
-
 const { user } = storeToRefs(userStore);
+
+const tweetStore = Store.useTweetStore();
 const { handleTweetSubmit } = tweetStore;
 
+const loading = ref(false);
 
 </script>
 

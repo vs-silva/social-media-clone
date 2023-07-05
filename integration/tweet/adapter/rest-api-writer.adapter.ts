@@ -1,5 +1,4 @@
 import type {TweetServiceWriterDrivenPort} from "../ports/tweet-service-writer-driven.port";
-import type {TweetRequestDTO} from "../../../server/business/tweets/core/dtos/tweet-request.dto";
 import type {TweetResponseDTO} from "../../../server/business/tweets/core/dtos/tweet-response.dto";
 import {UserServiceResourcesConstants} from "../../user/core/constants/user-service-resources.constants";
 import {ApiEngine} from "../../../api-engine";
@@ -10,10 +9,16 @@ export function RestApiWriterAdapter(): TweetServiceWriterDrivenPort {
 
     const apiEngine: AxiosInstance = ApiEngine(UserServiceResourcesConstants.ROOT, Eventbus);
 
-    async function postTweet(dto: TweetRequestDTO, resource: string): Promise<TweetResponseDTO | null> {
+    async function postTweet(dto: FormData, resource: string): Promise<TweetResponseDTO | null> {
 
         try {
-            const response = await apiEngine.post(resource, dto);
+
+            const response = await apiEngine.post(resource, dto, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
             return response.data as TweetResponseDTO;
 
         } catch (error) {

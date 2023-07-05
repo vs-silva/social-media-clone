@@ -20,9 +20,11 @@ export function TweetService(writer: TweetWriterDrivenPorts): TweetDriverPorts {
             return null;
         }
 
+        let files;
+
         if(dto.files) {
 
-            const files = Object.keys(dto.files).map( async (key: string) => {
+            files = Object.keys(dto.files).map( async (key: string) => {
 
                const fileToUpload = Object(dto.files)[key][`${MediaFileConstants.FILE_PATH}`];
 
@@ -34,7 +36,12 @@ export function TweetService(writer: TweetWriterDrivenPorts): TweetDriverPorts {
             });
 
             await Promise.all(files);
+
         }
+
+
+        console.log('RESULT FILES:::', files);
+
 
         return TweetMapperService.mapToTweetDTO(result);
     }
