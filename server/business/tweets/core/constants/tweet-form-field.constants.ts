@@ -1,4 +1,4 @@
 export const TweetFormFieldConstants = {
-    TWEET: 'tweet',
-    TWEET_IMAGE: 'tweet_image'
+    TEXT: 'text',
+    IMAGE: 'image'
 } as const;

@@ -37,7 +37,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const tweetDTO = await Tweets.createTweet(<TweetCreateDTO>{
         authorId: userId,
-        text: formResponse.fields[TweetFormFieldConstants.TWEET],
+        text: formResponse.fields[TweetFormFieldConstants.TEXT],
         files: formResponse.files
     });
 
@@ -47,6 +47,8 @@ export default defineEventHandler(async (event: H3Event) => {
             statusMessage: 'Internal server error',
         }));
     }
+
+    console.log('HERE::::',tweetDTO);
 
     return <TweetResponseDTO>{
         id: tweetDTO.id,

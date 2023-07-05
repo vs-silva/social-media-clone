@@ -34,8 +34,6 @@
 
          <auth v-else/>
 
-
-
       </div>
 
   </div>
@@ -44,17 +42,19 @@
 <script setup>
 import Store from "./store";
 import {storeToRefs} from "pinia";
-import Eventbus from "~/eventbus";
+import Eventbus from "./eventbus";
 import {ApiEngineEventTypeConstants} from "./api-engine/constants/api-engine-event-type.constants";
-
-const darkMode = ref(false);
-const loading = ref(false);
+import {ref} from "@vue/runtime-core";
 
 const userStore = Store.useUserStore();
 const { user, accessToken } = storeToRefs(userStore);
 const { refreshToken, getUser } = userStore;
 
+const darkMode = ref(false);
+const loading = ref(false);
+
 onBeforeMount(async () => {
+
   Eventbus.on(ApiEngineEventTypeConstants.SERVICE_REQUEST_STARTED, () => {
     loading.value = true;
   });
@@ -68,9 +68,7 @@ onBeforeMount(async () => {
   if(accessToken.value) {
     await getUser();
   }
-
 });
-
 
 onDeactivated(() => {
   Eventbus.off(ApiEngineEventTypeConstants.SERVICE_REQUEST_STARTED);
